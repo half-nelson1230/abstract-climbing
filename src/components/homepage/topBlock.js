@@ -16,6 +16,16 @@ align-items: center;
     height: 550px;
     min-height: 550px;
 }
+
+@media(max-width: 750px){
+  display: flex;
+  flex-direction: column-reverse;
+  row-gap: 30px;
+  height: fit-content;
+  z-index: -1;
+  margin-top: 30px;
+}
+
 `
 
 const Text = styled.div`
@@ -64,6 +74,13 @@ position: relative;
 @media(max-width: 900px){
     grid-column: auto / span 3;
 }
+
+@media(max-width: 750px){
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+}
+
 `
 
 const Ladder = styled.div`

@@ -4,8 +4,14 @@ import ShopBlock, {ShopHold, ShopBox, BoxText, CornerArrow, Buttons, Arrow} from
 import AboutBlock from '~/components/homepage/aboutBlock'
 import bgImage from '~/images/bgImg.png'
 import { useStaticQuery, graphql, Link } from 'gatsby'
+import { useBreakpoint } from 'gatsby-plugin-breakpoints';
+import Helmet from 'react-helmet'
+import {SqButton, SoftButton} from '~/components/general/components'
 
 const IndexPage = ({data}) => {
+
+  const breakpoints = useBreakpoint();
+
   const products = data.allShopifyProduct.edges
   const items = data.datoCmsHomepage.featuredProducts
   const homePage = data.datoCmsHomepage
@@ -14,6 +20,16 @@ const IndexPage = ({data}) => {
   const counterSub = counter - 1;
   const addOne = () => {
     if(counter < items.length - 3){
+    countUp(counter + 1);}
+  }
+
+  const addOneSmall = () => {
+    if(counter < items.length - 1){
+    countUp(counter + 1);}
+  }
+
+  const addOneMed = () => {
+    if(counter < items.length - 2){
     countUp(counter + 1);}
   }
 
@@ -27,13 +43,30 @@ const IndexPage = ({data}) => {
   const SliderArrows = () => {
   return(  <Buttons>
     <Arrow className="flip" onClick={minusOne}/>
-    <Arrow onClick={addOne}/>
+    {breakpoints.xxs ?
+      <>
+      <Link to="/shop"><SqButton
+        buttonText="All Products"
+      /></Link>
+      <Arrow onClick={addOneSmall}/>
+
+      </> :
+    <>
+
+
+    {breakpoints.xs ?
+      <Arrow onClick={addOneMed}/>
+      :
+      <Arrow onClick={addOne}/>
+    }
+    </>
+  }
+
     </Buttons>
 )
   }
 
   const SliderShop = () => {
-
 
 
 
@@ -75,6 +108,7 @@ const IndexPage = ({data}) => {
 
   return (
     <>
+    {breakpoints.xs ? <Helmet><body class='nav-switch' /></Helmet> : null}
     <TopBlock
       text={<div dangerouslySetInnerHTML={{__html: data.datoCmsHomepage.introText}}></div>}
       bg={bgImage}

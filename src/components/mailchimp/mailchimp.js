@@ -6,6 +6,11 @@ import addToMailchimp from 'gatsby-plugin-mailchimp'
 const Container = styled.div`
 width: 100%;
 padding: 30px;
+min-width: 400px;
+
+@media(max-width: 650px){
+  min-width: auto;
+}
 p{
   font-family: obviously;
   font-weight: 500;

@@ -4,7 +4,8 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`
 })
 const myCustomQueries = {
-    xs: '(max-width: 500px)',
+    xxs: '(max-width: 500px)',
+    xs: '(max-width: 750px)',
     sm: '(max-width: 900px)',
     md: '(max-width: 1200px)',
     l: '(max-width: 1600px)',

@@ -17,13 +17,33 @@ form{
 
 display: flex;
 justify-content: space-between;
+
+@media(max-width: 650px){
+display: block;
+form{
+  width: 100%;
+}
+
+}
 `
 
 const Menu = styled.div`
 display: flex;
-width: 33%;
 margin-right: 30px;
 margin-top: 30px;
+@media(max-width: 850px){
+  flex-wrap: wrap;
+  padding-left: 30px;
+  max-width: 300px;
+}
+
+@media(max-width: 650px){
+  padding-left: 0;
+  max-width: 100%;
+  margin-top: 0;
+  padding-bottom: 30px;
+}
+
 `
 
 const Icons = styled.div`
@@ -53,8 +73,16 @@ a{
 `
 
 const SubMenu = styled.ul`
-width: 50%;
 margin-left: 30px;
+min-width: 200px;
+
+@media(max-width: 850px){
+  width: 100%;
+  margin-left: 0;
+}
+
+
+
 
 a{
   :hover{

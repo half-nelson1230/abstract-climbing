@@ -11,11 +11,16 @@ display: flex;
 width: 100%;
 justify-content: space-between;
 
+@media(max-width: 750px){
+  flex-direction: column-reverse;
+  row-gap: 30px;
+}
 `
 
 const Text = styled.div`
 width: 50%;
 margin-right: 60px;
+
 
 
 h2{
@@ -48,6 +53,14 @@ p{
   margin-bottom: 40px;
 
 }
+
+@media(max-width: 750px){
+  width: 100%;
+  margin-right: 0;
+  p{
+    margin-bottom: 15px;
+  }
+}
 `
 
 const Image = styled.div`
@@ -58,6 +71,12 @@ background-image: url(${props => props.pic});
 background-size: cover;
 background-position: center center;
 position: relative;
+
+@media(max-width: 750px){
+  width: 100%;
+  padding-bottom: 75%;
+
+}
 `
 
 const Bowling = styled.div`
@@ -67,6 +86,10 @@ height: 120px;
 bottom: 0;
 left: -122px;
 background-image: url(${bBall});
+
+@media(max-width: 750px){
+  display: none;
+}
 `
 
 const AboutBlock = (props) => {

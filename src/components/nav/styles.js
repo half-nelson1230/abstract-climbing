@@ -16,6 +16,7 @@ export const Logo = styled.div`
 display: flex;
 align-items: center;
 grid-column: auto / span 2;
+min-width: 280px;
 a{
 img{
 &.logoImage{
@@ -60,7 +61,6 @@ li{
     font-family: obviously, sans-serif;
     font-weight: 500;
     font-style: normal;
-    margin-right: 30px;
     line-height: 18px;
     outline: 4px solid var(--char);
     background-color: var(--cream);
@@ -68,6 +68,7 @@ li{
     font-size: 18px;
     transition: 0.1s ease-in;
     margin-top: -10px;
+    position: relative;
     :hover{
       background-color: var(--orange);
       cursor: pointer;
@@ -80,13 +81,13 @@ li{
 export const CartNum = styled.span`
 background-color: var(--yellow);
 position: absolute;
-width: 40px;
-height: 40px;
+width: 36px;
+height: 36px;
 display: flex;
 border-radius: 20px;
 justify-content: center;
 align-items: center;
-top: 15px;
-right: 5px;
+top: -20px;
+right: -20px;
 border: 4px solid var(--char);
 `

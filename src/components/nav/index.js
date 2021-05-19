@@ -3,7 +3,6 @@ import {Link} from 'gatsby'
 import logoImg from '~/images/logoFull.svg'
 import {Container, Logo, Links, CartNum} from './styles'
 import reduce from 'lodash/reduce'
-
 import StoreContext from '~/context/StoreContext'
 import ContextProvider from '~/provider/ContextProvider'
 

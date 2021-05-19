@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {Link} from 'gatsby'
+import { useBreakpoint } from 'gatsby-plugin-breakpoints';
+
 
 import img1 from '~/images/overstock-holds-holds-page.jpg'
 import img2 from '~/images/fungus-family-holds-page.jpg'
@@ -16,6 +18,11 @@ import arrowFull from '~/images/arrowFull.svg'
 
 const Container = styled.div`
 margin-top: 60px;
+
+@media(max-width: 500px){
+  margin-top: 30px;
+}
+
 `
 
 const Top = styled.div`
@@ -71,6 +78,15 @@ flex-shrink: 0;
 margin-right: 30px;
 transform: translateX(calc((-100% - 30px) * ${props => props.mover}));
 transition: 0.5s ease-in;
+
+@media(max-width: 750px){
+  width: calc((100% - 30px) / 2);
+
+}
+
+@media(max-width: 500px){
+  width: 100%;
+}
 `
 
 export const ShopBox = styled.div`
@@ -79,9 +95,7 @@ background-image: url(${props => props.image});
 background-size: cover;
 background-position: center center;
 outline: 4px solid var(--char);
-
 outline-offset: -4px;
-
 
 `
 
@@ -196,11 +210,13 @@ align-items: center;
 width: 100%;
 justify-content: space-between;
 margin: 20px 0 0;
+
 `
 
 const colors = [img1, img2, img3, img4]
 
 const ShopBlock = (props) => {
+const breakpoints = useBreakpoint();
 
 const [counter, countUp] = useState(0);
 
@@ -220,10 +236,19 @@ return(
   <Container>
     <Top>
       <h2>SHOP</h2>
-      <ArrowLine><span/></ArrowLine>
-      <Link to="/shop"><SqButton
-        buttonText="All Products"
-      /></Link>
+      {breakpoints.xxs ?
+        null
+
+        :
+        <>
+          <ArrowLine><span/></ArrowLine>
+        <Link to="/shop"><SqButton
+          buttonText="All Products"
+        /></Link>
+        </>
+
+      }
+
     </Top>
 
     <Main >
@@ -243,6 +268,8 @@ return(
 
 
     </TextHold>
+
+
     </Main>
   </Container>
 )
