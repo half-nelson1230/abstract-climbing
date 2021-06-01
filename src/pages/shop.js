@@ -125,8 +125,17 @@ const ShopPage = ({data}) => {
     <Items>
     {items.map(({node}) =>{
       const checker = node.test
-      const pic = node.featuredImage.url
       const measurements = node.measurements
+
+
+            let pic;
+
+            if(node.featuredImage === null){
+              pic = null
+            }else{
+              pic = node.featuredImage.url
+            }
+            
       return(
     <>
       {products.map(({node}) =>
