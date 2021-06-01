@@ -50,6 +50,8 @@ const ProductTemplate = ({ data }) => {
   const product = data.shopifyProduct
   const dato = data.allDatoCmsProduct.edges
   const formProduct =  <ProductForm product={product}/>;
+
+
   return(
     <Container>
 
@@ -62,13 +64,19 @@ const ProductTemplate = ({ data }) => {
     </Return>
     {dato.map(({node}) =>{
       if(node.test === product.handle){
+        let pic;
+        if(node.featuredImage === null){
+          pic = null
+          }else{
+          pic = node.featuredImage.url
+            }
       return(
         <TopPiece
         head={product.title}
         price={product.priceRange.minVariantPrice.amount}
         description={node.description}
         measurements={node.measurements}
-        image={node.featuredImage.url}
+        image={pic}
         Form={formProduct}
         />
       )}

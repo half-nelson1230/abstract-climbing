@@ -126,16 +126,12 @@ const ShopPage = ({data}) => {
     {items.map(({node}) =>{
       const checker = node.test
       const measurements = node.measurements
-
-
-            let pic;
-
-            if(node.featuredImage === null){
-              pic = null
-            }else{
-              pic = node.featuredImage.url
-            }
-            
+      let pic;
+      if(node.featuredImage === null){
+        pic = null
+        }else{
+        pic = node.featuredImage.url
+          }
       return(
     <>
       {products.map(({node}) =>
