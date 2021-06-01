@@ -76,9 +76,9 @@ const IndexPage = ({data}) => {
         const checker = thing.test
 
         let pic;
-        if(pic.featuredImage === null){
+        if(thing.featuredImage === null){
           pic = null
-        }else{
+        } else{
           pic = thing.featuredImage.url
         }
 
