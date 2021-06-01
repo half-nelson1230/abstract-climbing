@@ -74,7 +74,14 @@ const IndexPage = ({data}) => {
       <>
       {items.map((thing, index) => {
         const checker = thing.test
-        const pic = thing.featuredImage.url
+
+        let pic;
+        if(pic.featuredImage === null){
+          pic = null
+        }else{
+          pic = thing.featuredImage.url
+        }
+
         console.log(pic);
         console.log(checker);
         return(
