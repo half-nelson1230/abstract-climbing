@@ -27,7 +27,7 @@ p{
   font-family: obviously;
   font-weight: 500;
   font-size: 16px;
-  margin: 0 0 10px;
+  margin: 0;
 }
 `
 
@@ -46,6 +46,7 @@ h2{
   color: var(--cream);
   -webkit-text-stroke: 2.5px var(--char);
   letter-spacing: 2px;
+  line-height: 52px;
 }
 
 h3{
@@ -64,9 +65,9 @@ h3{
 const TopPiece = (props, {data}) => {
 
   return(
-    <Container>
+    <>
 
-
+    {/*
       <Image src={props.image}/>
       <Text>
       <HeadPrice>
@@ -78,9 +79,11 @@ const TopPiece = (props, {data}) => {
 
         {props.Form}
       </Text>
+      */}
 
+        {props.Form}
 
-    </Container>
+    </>
   )
 }
 
@@ -112,6 +115,11 @@ TopPiece.propTypes = {
         price: PropTypes.string,
         title: PropTypes.string,
         shopifyId: PropTypes.string,
+        image: PropTypes.arrayOf(
+          PropTypes.shape({
+            originalSrc: PropTypes.string,
+          })
+        ),
         selectedOptions: PropTypes.arrayOf(
           PropTypes.shape({
             name: PropTypes.string,

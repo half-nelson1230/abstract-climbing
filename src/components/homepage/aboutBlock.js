@@ -21,6 +21,11 @@ const Text = styled.div`
 width: 50%;
 margin-right: 60px;
 
+&.buttonDrop{
+  button{
+  margin-top: 30px;
+}
+}
 
 
 h2{
@@ -50,7 +55,7 @@ p{
   font-family: obviously;
   font-weight: 500;
   font-size: 13px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 
 }
 
@@ -96,7 +101,7 @@ const AboutBlock = (props) => {
 
 return(
   <Container>
-    <Text>
+    <Text className='buttonDrop'>
       {props.text}
       <SoftButton buttonText="CONTACT US"/>
     </Text>

@@ -6,6 +6,73 @@ import { MainFixed, LabelsFixed, PicHold, Spacer, Info, Atc} from '~/templates/u
 import styled from 'styled-components'
 import StoreContext from '~/context/StoreContext'
 
+const Container = styled.div`
+display: flex;
+gap: 30px;
+@media(max-width: 750px){
+  flex-wrap: wrap;
+  flex-direction: column-reverse;
+}
+`
+
+const Image = styled.img`
+width: 50%;
+outline: 4px solid var(--char);
+
+@media(max-width: 750px){
+  width: 100%;
+}
+`
+
+const Text = styled.div`
+width: 50%;
+color: var(--char);
+@media(max-width: 750px){
+  width: 100%;
+}
+p{
+  font-family: obviously;
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0;
+}
+`
+
+const HeadPrice = styled.div`
+display: flex;
+width: 100%;
+justify-content: space-between;
+align-items: center;
+
+@media(max-width: 900px){
+  flex-wrap: wrap;
+  h2{
+    width: 100%;
+  }
+}
+h2{
+  font-family: obviously-narrow;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+  font-size: 48px;
+  color: var(--cream);
+  -webkit-text-stroke: 2.5px var(--char);
+  letter-spacing: 2px;
+  line-height: 52px;
+}
+
+h3{
+  font-family: obviously;
+  font-weight: 500;
+  margin: 0;
+  font-size: 24px;
+  :before{
+    content: '$'
+  }
+}
+`
+
 const Counter = styled.div`
 display: flex;
 font-family: obviously;
@@ -23,6 +90,8 @@ margin: 0 30px 0 0;
 font-weight: 800;
 background-color: var(--cream);
 text-transform: uppercase;
+
+
 
 option{
   font-family: eurostile;
@@ -46,7 +115,7 @@ outline: 4px solid var(--char);
 font-size: 16px;
 font-family: obviously-narrow;
 font-weight: 800;
-margin: 0;
+margin: 0 0 20px;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -78,7 +147,11 @@ display: flex;
 align-items: middle;
 margin-top: 30px;
 
+@media(max-width: 900px){
+  flex-wrap: wrap;
+}
 button{
+  white-space: nowrap;
   :hover{
     cursor: pointer;
   }
@@ -114,13 +187,18 @@ border-radius: 8px;
 }
 `
 
-const ProductForm = ({ product }) => {
+const ProductForm = ({ product, dato }, props) => {
   const {
     options,
     variants,
     variants: [initialVariant],
     priceRange: { minVariantPrice },
   } = product
+
+  const {
+    measurements,
+  } = dato
+
   const [variant, setVariant] = useState({ ...initialVariant })
   const [quantity, setQuantity] = useState(1)
   const {
@@ -149,6 +227,9 @@ const ProductForm = ({ product }) => {
   useEffect(() => {
     checkAvailability(product.shopifyId)
   }, [productVariant, checkAvailability, product.shopifyId])
+
+  console.log(productVariant);
+  console.log(checkAvailability);
 
   const handleQuantityChange = ({ target }) => {
     setQuantity(target.value)
@@ -219,59 +300,80 @@ const ProductForm = ({ product }) => {
   const green = '#84A936'
   const purple = '#BB00EA'
   const gray = '#C4C4C4'
-
+  console.log(variant)
   return (
-    <>
 
+    <Container>
 
-      <Buttons>
-      {options.map(({ id, name, values }, index) => (
-        <React.Fragment key={id}>
-        {values.length > 1 &&
-          <>
-          <Select
-            name={name}
-            key={id}
-            onBlur={event => handleOptionChange(index, event)}
-          >
-            {values.map(value => {
-              const disablee = checkDisabled(name, value);
-              console.log(disablee);
-              return(
+    {console.log(product)}
+    {console.log(dato.measurements)}
 
-              <option
-                value={value}
-                key={`${name}-${value}`}
-                disabled={checkDisabled(name, value)}
-              >
-                {value} {disablee ? ' - out of stock' : ''}
-              </option>
-            )})}
-          </Select>
-        </>}
-        </React.Fragment>
-      ))}
+      <Image src={variant.image.originalSrc}/>
+      <Text>
+      <HeadPrice>
+        <h2>{product.title}</h2>
+        <h3>{product.priceRange.minVariantPrice.amount}</h3>
+      </HeadPrice>
+        <p>{dato.description}</p>
+        <p>{dato.measurements}</p>
+        <Buttons>
+        {options.map(({ id, name, values }, index) => (
+          <React.Fragment key={id}>
+          {values.length > 1 &&
+            <>
+            <Select
+              name={name}
+              key={id}
+              onClick={event => handleOptionChange(index, event)}
+            >
+              {values.map(value => {
+                const disablee = checkDisabled(name, value);
+                console.log(disablee);
+                return(
+
+                <option
+                  value={value}
+                  key={`${name}-${value}`}
+                  disabled={checkDisabled(name, value)}
+                >
+                  {value} {disablee ? ' - out of stock' : ''}
+                </option>
+              )})}
+            </Select>
+            </>}
+          </React.Fragment>
+        ))}
       <Counter>
-        <PlusMinus onClick={minusOne}><p>-</p></PlusMinus>
-        <Number><h3>{quantity}</h3></Number>
-        <PlusMinus onClick={plusOne}><p>+</p></PlusMinus>
-      </Counter>
-      <AddToCart
-      type="submit"
-      disabled={!available || adding}
-      onClick={handleAddToCart}
-      ><p>{available ? 'Add to Cart' : 'Out of Stock'}</p></AddToCart>
-      </Buttons>
-    </>
+          <PlusMinus onClick={minusOne}><p>-</p></PlusMinus>
+          <Number><h3>{quantity}</h3></Number>
+          <PlusMinus onClick={plusOne}><p>+</p></PlusMinus>
+        </Counter>
+        <AddToCart
+        type="submit"
+        disabled={!available || adding}
+        onClick={handleAddToCart}
+        ><p>{available ? 'Add to Cart' : 'Out of Stock'}</p></AddToCart>
+        </Buttons>
+      </Text>
+    </Container>
+
+
+
   )
 }
 
 ProductForm.propTypes = {
   product: PropTypes.shape({
     descriptionHtml: PropTypes.string,
+    description: PropTypes.string,
     handle: PropTypes.string,
     id: PropTypes.string,
     shopifyId: PropTypes.string,
+    priceRange: PropTypes.arrayOf(
+      PropTypes.shape({
+        minVariantPrice: PropTypes.string
+      })
+    ),
     images: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string,
@@ -294,6 +396,11 @@ ProductForm.propTypes = {
         price: PropTypes.string,
         title: PropTypes.string,
         shopifyId: PropTypes.string,
+        image: PropTypes.arrayOf(
+          PropTypes.shape({
+            originalSrc: PropTypes.string,
+          })
+        ),
         selectedOptions: PropTypes.arrayOf(
           PropTypes.shape({
             name: PropTypes.string,
@@ -303,7 +410,11 @@ ProductForm.propTypes = {
       })
     ),
   }),
+  dato: PropTypes.shape({
+    measurements: PropTypes.string,
+  }),
   addVariantToCart: PropTypes.func,
+
 }
 
 export default ProductForm

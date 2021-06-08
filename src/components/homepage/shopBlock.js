@@ -112,7 +112,7 @@ h3{
   font-family: obviously-narrow;
   text-transform: uppercase;
   font-weight: 800;
-  font-size: 28px;
+  font-size: 22px;
   line-height: 32px;
   margin: 0;
   padding: 0 10px 5px;
@@ -120,8 +120,8 @@ h3{
 `
 
 export const CornerArrow = styled.div`
-height: 50px;
-width: 50px;
+height: 70px;
+width: 60px;
 border-left: 4px solid var(--char);
 background-color: var(--yellow);
 background-image: url(${arrow});

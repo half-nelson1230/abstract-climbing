@@ -52,6 +52,21 @@ background-position: center center;
 outline: 4px solid var(--char);
 `
 
+const TitleHold = styled.div`
+h3{
+  font-family: obviously-narrow;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 28px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 0 0 10px;
+}
+`
+
 const ItemText = styled.div`
 color: var(--char);
 h3{
@@ -60,6 +75,9 @@ h3{
   text-transform: uppercase;
   font-size: 28px;
   margin: 0;
+  line-height: 32px;
+  width: 100%;
+  padding: 5px 0;
 }
 p{
   font-family: obviously;
@@ -69,9 +87,7 @@ p{
   font-weight: 500;
   span{
     font-size: 13px;
-    :before{
-      content: " - "
-    }
+
   }
 }
 `
@@ -80,20 +96,21 @@ const Holder = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
-outline: 4px solid;
-padding: 0px 10px 10px;
+padding: 0px 0 10px;
 position: relative;
+min-height: 30px;
 `
 
 const Button = styled.button`
-width: 70px;
+width: 30px;
+height: 30px;
 position: absolute;
 right: 0;
 top: 0;
 bottom: 0;
 border: none;
-background-color: var(--yellow);
-outline: 4px solid var(--char);
+background-color: var(--cream);
+outline: 3px solid var(--char);
 background-image: url(${arrow});
 background-size: 50%;
 background-repeat: no-repeat;
@@ -144,11 +161,12 @@ const ShopPage = ({data}) => {
         itemImage={pic}
         />
         <Holder>
+
         <ItemText>
         <h3>{node.title}</h3>
+
         <p>${node.priceRange.minVariantPrice.amount}<span>{measurements}</span></p>
         </ItemText>
-        <Button></Button>
         </Holder>
       </Item>
       </Link>

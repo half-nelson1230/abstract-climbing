@@ -48,9 +48,8 @@ span{
 const ProductTemplate = ({ data }) => {
 
   const product = data.shopifyProduct
-  const dato = data.allDatoCmsProduct.edges
+  const dato = data.datoCmsProduct
   const formProduct =  <ProductForm product={product}/>;
-
 
   return(
     <Container>
@@ -62,25 +61,12 @@ const ProductTemplate = ({ data }) => {
     <span/>
     <Link to="/shop"><h3>all products</h3></Link>
     </Return>
-    {dato.map(({node}) =>{
-      if(node.test === product.handle){
-        let pic;
-        if(node.featuredImage === null){
-          pic = null
-          }else{
-          pic = node.featuredImage.url
-            }
-      return(
-        <TopPiece
-        head={product.title}
-        price={product.priceRange.minVariantPrice.amount}
-        description={node.description}
-        measurements={node.measurements}
-        image={pic}
-        Form={formProduct}
-        />
-      )}
-    })}
+
+    <ProductForm
+    product={product}
+    dato={dato}
+    />
+    
     </Container>
   )
 }
@@ -104,6 +90,10 @@ export const query = graphql`
       handle
       productType
       shopifyId
+      description
+      images{
+        originalSrc
+      }
       options {
         id
         name
@@ -119,6 +109,9 @@ export const query = graphql`
           name
           value
         }
+        image{
+          originalSrc
+        }
       }
       priceRange {
         minVariantPrice {
@@ -131,17 +124,17 @@ export const query = graphql`
         }
       }
     }
-    allDatoCmsProduct {
-        edges {
-          node {
+    datoCmsProduct {
+
+
             test
             measurements
             featuredImage {
               url
             }
             description
-          }
-        }
+
+
       }
   }
 `
