@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import StoreContext from '~/context/StoreContext'
+import {StoreContext} from '~/provider/ContextProvider'
 import LineItem from './LineItem'
 import { useBreakpoint } from 'gatsby-plugin-breakpoints';
 
@@ -19,8 +19,23 @@ min-height: 100vh;
 padding: 30px;
 transition: 0.25s ease-in;
 
+@media(max-width: 700px){
+  width: 100% !important;
+}
+
+@media(max-width: 950px){
+  width: 75%;
+}
+
+
 &.hidden{
   right: -50%;
+  @media(max-width: 700px){
+    right: -100% !important;
+  }
+  @media(max-width: 950px){
+    right: -75%;
+  }
 }
 
 img{
@@ -73,9 +88,9 @@ display: flex;
 justify-content: space-between;
 width: 100%;
 position: relative;
-margin-top: 2px;
+margin-top: 0px;
 outline: 2px solid var(--char);
-outline-offset: 0;
+outline-offset: -1px;
 @media(max-width: 800px){
   grid-template-columns: 25% 1fr 25%;
 }
@@ -87,7 +102,7 @@ outline-offset: 0;
 
 button{
   outline: 2px solid;
-  outline-offset: 0;
+  outline-offset: -1px;
 
   border: none;
   font-family: obviously-narrow;
@@ -186,9 +201,8 @@ const Cart = (props) => {
   const breakpoints = useBreakpoint();
 
 
-  const {
-    store: { checkout },
-  } = useContext(StoreContext)
+  const { checkout, loading } = React.useContext(StoreContext)
+
 
   const handleCheckout = () => {
     window.open(checkout.webUrl)

@@ -1,8 +1,6 @@
-import fetch from 'isomorphic-fetch'
-import React, { useState, useEffect, useRef } from 'react'
-import Client from 'shopify-buy'
-
-import Context from '~/context/StoreContext'
+import * as React from "react"
+import fetch from "isomorphic-fetch"
+import Client from "shopify-buy"
 
 const client = Client.buildClient(
   {
@@ -12,120 +10,127 @@ const client = Client.buildClient(
   fetch
 )
 
-const ContextProvider = ({ children }) => {
-  let initialStoreState = {
-    client,
-    adding: false,
-    checkout: { lineItems: [] },
-    products: [],
-    shop: {},
+const defaultValues = {
+  cart: [],
+  isOpen: false,
+  loading: false,
+  onOpen: () => {},
+  onClose: () => {},
+  addVariantToCart: () => {},
+  removeLineItem: () => {},
+  updateLineItem: () => {},
+  client,
+  checkout: {
+    lineItems: [],
+  },
+}
+
+export const StoreContext = React.createContext(defaultValues)
+
+const isBrowser = typeof window !== `undefined`
+const localStorageKey = `shopify_checkout_id`
+
+export const StoreProvider = ({ children }) => {
+  const [checkout, setCheckout] = React.useState(defaultValues.checkout)
+  const [loading, setLoading] = React.useState(false)
+  const [didJustAddToCart, setDidJustAddToCart] = React.useState(false)
+
+  const setCheckoutItem = (checkout) => {
+    if (isBrowser) {
+      localStorage.setItem(localStorageKey, checkout.id)
+    }
+
+    setCheckout(checkout)
   }
 
-  const [store, updateStore] = useState(initialStoreState)
-  const isRemoved = useRef(false)
-
-  useEffect(() => {
+  React.useEffect(() => {
     const initializeCheckout = async () => {
-      // Check for an existing cart.
-      const isBrowser = typeof window !== 'undefined'
       const existingCheckoutID = isBrowser
-        ? localStorage.getItem('shopify_checkout_id')
+        ? localStorage.getItem(localStorageKey)
         : null
 
-      const setCheckoutInState = checkout => {
-        if (isBrowser) {
-          localStorage.setItem('shopify_checkout_id', checkout.id)
-        }
-
-        updateStore(prevState => {
-          return { ...prevState, checkout }
-        })
-      }
-
-      const createNewCheckout = () => store.client.checkout.create()
-      const fetchCheckout = id => store.client.checkout.fetch(id)
-
-      if (existingCheckoutID) {
+      if (existingCheckoutID && existingCheckoutID !== `null`) {
         try {
-          const checkout = await fetchCheckout(existingCheckoutID)
-          // Make sure this cart hasn’t already been purchased.
-          if (!isRemoved.current && !checkout.completedAt) {
-            setCheckoutInState(checkout)
+          const existingCheckout = await client.checkout.fetch(
+            existingCheckoutID
+          )
+          if (!existingCheckout.completedAt) {
+            setCheckoutItem(existingCheckout)
             return
           }
         } catch (e) {
-          localStorage.setItem('shopify_checkout_id', null)
+          localStorage.setItem(localStorageKey, null)
         }
       }
 
-      const newCheckout = await createNewCheckout()
-      if (!isRemoved.current) {
-        setCheckoutInState(newCheckout)
-      }
+      const newCheckout = await client.checkout.create()
+      setCheckoutItem(newCheckout)
     }
 
     initializeCheckout()
-  }, [store.client.checkout])
+  }, [])
 
-  useEffect(() => () => {
-    isRemoved.current = true
-  })
+  const addVariantToCart = (variantId, quantity) => {
+    setLoading(true)
+
+    const checkoutID = checkout.id
+
+    const lineItemsToUpdate = [
+      {
+        variantId,
+        quantity: parseInt(quantity, 10),
+      },
+    ]
+
+    return client.checkout
+      .addLineItems(checkoutID, lineItemsToUpdate)
+      .then((res) => {
+        setCheckout(res)
+        setLoading(false)
+        setDidJustAddToCart(true)
+        setTimeout(() => setDidJustAddToCart(false), 3000)
+      })
+  }
+
+  const removeLineItem = (checkoutID, lineItemID) => {
+    setLoading(true)
+
+    return client.checkout
+      .removeLineItems(checkoutID, [lineItemID])
+      .then((res) => {
+        setCheckout(res)
+        setLoading(false)
+      })
+  }
+
+  const updateLineItem = (checkoutID, lineItemID, quantity) => {
+    setLoading(true)
+
+    const lineItemsToUpdate = [
+      { id: lineItemID, quantity: parseInt(quantity, 10) },
+    ]
+
+    return client.checkout
+      .updateLineItems(checkoutID, lineItemsToUpdate)
+      .then((res) => {
+        setCheckout(res)
+        setLoading(false)
+      })
+  }
 
   return (
-    <Context.Provider
+    <StoreContext.Provider
       value={{
-        store,
-        addVariantToCart: async (variantId, quantity) => {
-          if (variantId === '' || !quantity) {
-            console.error('Both a size and quantity are required.')
-            return
-          }
-
-          updateStore(prevState => {
-            return { ...prevState, adding: true }
-          })
-
-          const { checkout, client } = store
-
-          const checkoutId = checkout.id
-          const lineItemsToUpdate = [
-            { variantId, quantity: parseInt(quantity, 10) },
-          ]
-
-          return client.checkout
-            .addLineItems(checkoutId, lineItemsToUpdate)
-            .then(checkout => {
-              updateStore(prevState => {
-                return { ...prevState, checkout, adding: false }
-              })
-            })
-        },
-        removeLineItem: (client, checkoutID, lineItemID) => {
-          return client.checkout
-            .removeLineItems(checkoutID, [lineItemID])
-            .then(res => {
-              updateStore(prevState => {
-                return { ...prevState, checkout: res }
-              })
-            })
-        },
-        updateLineItem: (client, checkoutID, lineItemID, quantity) => {
-          const lineItemsToUpdate = [
-            { id: lineItemID, quantity: parseInt(quantity, 10) },
-          ]
-
-          return client.checkout
-            .updateLineItems(checkoutID, lineItemsToUpdate)
-            .then(res => {
-              updateStore(prevState => {
-                return { ...prevState, checkout: res }
-              })
-            })
-        },
+        ...defaultValues,
+        addVariantToCart,
+        removeLineItem,
+        updateLineItem,
+        checkout,
+        loading,
+        didJustAddToCart,
       }}
     >
       {children}
-    </Context.Provider>
+    </StoreContext.Provider>
   )
 }
-export default ContextProvider

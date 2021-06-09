@@ -4,8 +4,8 @@ import {Container, Logo, Links, CartNum, Button, Menu, Items} from './stylesSmal
 import reduce from 'lodash/reduce'
 import { useBreakpoint } from 'gatsby-plugin-breakpoints';
 
-import StoreContext from '~/context/StoreContext'
-import ContextProvider from '~/provider/ContextProvider'
+import {StoreContext} from '~/provider/ContextProvider'
+
 
 import burger from '~/images/burger.svg'
 import bag from '~/images/bag.svg'
@@ -13,9 +13,8 @@ import logoImg from '~/images/logoFull.svg'
 import logoSmall from '~/images/logo.svg'
 
 const useQuantity = () => {
-  const {
-    store: { checkout },
-  } = useContext(StoreContext)
+  const { checkout, loading } = React.useContext(StoreContext)
+
   const items = checkout ? checkout.lineItems : []
   const total = reduce(items, (acc, item) => acc + item.quantity, 0)
   return [total !== 0, total]

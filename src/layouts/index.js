@@ -4,9 +4,8 @@ import styled from 'styled-components'
 import Nav from '~/components/nav/index'
 import NavSmall from '~/components/nav/navSmall'
 import Footer from '~/components/footer/footer'
-import ContextProvider from '~/provider/ContextProvider'
+import { StoreProvider } from '~/provider/ContextProvider'
 import PropTypes from 'prop-types'
-import StoreContext from '~/context/StoreContext'
 import Cart from '~/components/Cart/index'
 import { useBreakpoint } from 'gatsby-plugin-breakpoints';
 
@@ -39,7 +38,7 @@ const breakpoints = useBreakpoint();
 
 
   return (
-    <ContextProvider>
+    <StoreProvider>
     <GlobalStyle/>
     <Cart
       hider={clickHide}
@@ -65,7 +64,7 @@ const breakpoints = useBreakpoint();
       {children}
     </Container>
     <Footer/>
-    </ContextProvider>
+    </StoreProvider>
   )
 }
 

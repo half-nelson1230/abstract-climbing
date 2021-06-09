@@ -4,11 +4,12 @@ import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
 import { MainFixed, LabelsFixed, PicHold, Spacer, Info, Atc} from '~/templates/utilities/productStyles'
 import styled from 'styled-components'
-import StoreContext from '~/context/StoreContext'
+import {StoreContext} from '~/provider/ContextProvider'
 
 const Container = styled.div`
 display: flex;
 gap: 30px;
+margin-top: 30px;
 @media(max-width: 750px){
   flex-wrap: wrap;
   flex-direction: column-reverse;
@@ -203,7 +204,7 @@ const ProductForm = ({ product, dato }, props) => {
   const [quantity, setQuantity] = useState(1)
   const {
     addVariantToCart,
-    store: { client, adding, checkout },
+    client, adding, checkout,
   } = useContext(StoreContext)
 
   const productVariant =
@@ -300,7 +301,11 @@ const ProductForm = ({ product, dato }, props) => {
   const green = '#84A936'
   const purple = '#BB00EA'
   const gray = '#C4C4C4'
-  console.log(variant)
+  console.log(variant.image.originalSrc)
+
+  let picSwitch
+
+
   return (
 
     <Container>

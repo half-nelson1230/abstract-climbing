@@ -3,13 +3,12 @@ import {Link} from 'gatsby'
 import logoImg from '~/images/logoFull.svg'
 import {Container, Logo, Links, CartNum} from './styles'
 import reduce from 'lodash/reduce'
-import StoreContext from '~/context/StoreContext'
-import ContextProvider from '~/provider/ContextProvider'
+import {StoreContext} from '~/provider/ContextProvider'
+
 
 const useQuantity = () => {
-  const {
-    store: { checkout },
-  } = useContext(StoreContext)
+  const { checkout, loading } = React.useContext(StoreContext)
+
   const items = checkout ? checkout.lineItems : []
   const total = reduce(items, (acc, item) => acc + item.quantity, 0)
   return [total !== 0, total]

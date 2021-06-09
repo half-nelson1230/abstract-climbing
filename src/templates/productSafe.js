@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import Helmet from 'react-helmet'
 import {graphql} from 'gatsby'
 import TopPiece from './productPieces/top'
-import ProductForm from '~/ProductForm/index'
+import ProductForm from '~/ProductForm/form2'
 import {Link} from 'gatsby'
-import Client from 'shopify-buy'
 
 import arrow from '~/images/arrow.svg'
 import arrowFull from '~/images/arrowFull.svg'
@@ -53,13 +52,7 @@ const ProductTemplate = ({ data }) => {
   const formProduct =  <ProductForm product={product}/>;
 
   return(
-    <>
-    <Helmet>
-  <body class='nav-switch' />
-  </Helmet>
-
     <ProductForm product={product} dato={dato}/>
-    </>
   )
 }
 

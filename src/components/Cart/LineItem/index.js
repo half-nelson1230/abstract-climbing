@@ -3,7 +3,7 @@ import {  Link } from 'gatsby'
 import styled from 'styled-components'
 import { useBreakpoint } from 'gatsby-plugin-breakpoints';
 
-import StoreContext from '~/context/StoreContext'
+import {StoreContext} from '~/provider/ContextProvider'
 
 const Item = styled.div`
 width: 100%;
@@ -12,7 +12,7 @@ grid-template-columns: 120px 1fr 60px;
 position: relative;
 align-items: center;
 outline: 2px solid var(--char);
-outline-offset: 0;
+outline-offset: -1px;
 @media(max-width: 800px){
   grid-template-columns: 25% 1fr 25%;
 }
@@ -21,14 +21,23 @@ outline-offset: 0;
   grid-template-columns: 33% 1fr;
 }
 
+@media(max-width: 700px){
+  min-height: 170px;
+}
+
 img{
   position: relative;
   width: 100%;
   height: 120px;
   object-fit: cover;
   outline: 2px solid var(--char);
-  outline-offset: 0px;
+  outline-offset: -1px;
 
+  @media(max-width: 700px){
+    height: 100%;
+
+
+  }
 }
 a{
   align-self: stretch;
@@ -52,12 +61,22 @@ p{
   @media(max-width: 600px){
     font-size: 16px;
   }
+
+  &.color{
+    justify-self: flex-end;
+  }
+
+  &.remover{
+    :hover{
+      cursor: pointer;
+    }
+  }
 }
 `
 
 const BigButton = styled.button`
   outline: 2px solid var(--char);
-  outline-offset: 0px;
+  outline-offset: -1px;
   background-color: var(--cream);
   font-family: eurostile;
   font-weight: 800;
@@ -84,6 +103,7 @@ font-family: obviously;
 margin-left: 30px;
 @media(max-width: 600px){
   padding: 15px;
+  margin-left: 0;
 }
 h4{
   margin: 5px 0;
@@ -163,6 +183,23 @@ p{
 h3{
   margin-right: 10px;
 }
+
+&.split{
+  justify-content: space-between;
+
+  @media(max-width: 600px){
+    flex-wrap: wrap;
+    h3{
+      width: 100%;
+    }
+    p{
+      width: 100%;
+    }
+  }
+
+}
+
+
 `
 
 
@@ -173,7 +210,7 @@ const LineItem = (props, {data} ) => {
   const {
     removeLineItem,
     updateLineItem,
-    store: { client, checkout },
+    client, checkout,
   } = useContext(StoreContext)
 
   const variantImage = item.variant.image ? (
@@ -191,14 +228,14 @@ const LineItem = (props, {data} ) => {
     : null
 
   const handleRemove = () => {
-    removeLineItem(client, checkout.id, item.id)
+    removeLineItem( checkout.id, item.id)
   }
 
   const handleAddOne = () => {
-    updateLineItem(client, checkout.id, item.id, item.quantity + 1)
+    updateLineItem( checkout.id, item.id, item.quantity + 1)
   }
   const handleMinOne = () => {
-    updateLineItem(client, checkout.id, item.id, item.quantity - 1)
+    updateLineItem( checkout.id, item.id, item.quantity - 1)
   }
   console.log(item.productType);
 
@@ -213,9 +250,9 @@ const LineItem = (props, {data} ) => {
         {variantImage}
 
       <Info>
-      <Quantity>
+      <Quantity className="split">
       <h3>{item.title}</h3>
-      <p>{selectedOptions}</p>
+      <p className="color">{selectedOptions}</p>
       </Quantity>
       <Quantity>
 
@@ -225,9 +262,7 @@ const LineItem = (props, {data} ) => {
       <h4>${item.variant.price * item.quantity}</h4>
       </Quantity>
 
-      {breakpoints.xs ? <p onClick={handleRemove}>remove item</p> : null}
-      </Info>
-      {breakpoints.xs ? null : <BigButton onClick={handleRemove}>X</BigButton>}
+<p onClick={handleRemove} className="remover">remove item</p>      </Info>
     </Item>
   )
 }
