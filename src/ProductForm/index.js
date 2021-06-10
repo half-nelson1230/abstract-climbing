@@ -196,9 +196,6 @@ const ProductForm = ({ product, dato }, props) => {
     priceRange: { minVariantPrice },
   } = product
 
-  const {
-    measurements,
-  } = dato
 
   const [variant, setVariant] = useState({ ...initialVariant })
   const [quantity, setQuantity] = useState(1)
@@ -303,15 +300,11 @@ const ProductForm = ({ product, dato }, props) => {
   const gray = '#C4C4C4'
   console.log(variant.image.originalSrc)
 
-  let picSwitch
 
 
   return (
 
     <Container>
-
-    {console.log(product)}
-    {console.log(dato.measurements)}
 
       <Image src={variant.image.originalSrc}/>
       <Text>
@@ -319,8 +312,8 @@ const ProductForm = ({ product, dato }, props) => {
         <h2>{product.title}</h2>
         <h3>{product.priceRange.minVariantPrice.amount}</h3>
       </HeadPrice>
-        <p>{dato.description}</p>
-        <p>{dato.measurements}</p>
+        {dato && <p>{dato.description}</p>}
+        {dato && <p>{dato.measurements}</p>}
         <Buttons>
         {options.map(({ id, name, values }, index) => (
           <React.Fragment key={id}>
@@ -417,6 +410,7 @@ ProductForm.propTypes = {
   }),
   dato: PropTypes.shape({
     measurements: PropTypes.string,
+    description: PropTypes.string,
   }),
   addVariantToCart: PropTypes.func,
 
