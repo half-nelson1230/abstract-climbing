@@ -57,7 +57,6 @@ const ProductTemplate = ({ data }) => {
     <Helmet>
   <body class='nav-switch' />
   </Helmet>
-
     <ProductForm product={product} dato={dato}/>
     </>
   )
