@@ -107,6 +107,15 @@ option{
   font-size: 16px;
 }
 
+:focus{
+  font-size: 16px;
+}
+
+textarea{
+  font-size: 16px;
+
+}
+
 option:disabled::after{
 
     content: 'beep';
