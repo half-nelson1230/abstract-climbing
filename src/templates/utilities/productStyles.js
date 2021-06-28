@@ -120,11 +120,14 @@ width: 100%;
 padding: 10px;
 outline: 2px solid;
 margin-top: var(--Margin);
-font-family: eurostile;
+font-family: obviously-narrow;
+
 font-weight: 800;
+cursor: pointer;
 option{
-  font-family: eurostile;
+  font-family: obviously-narrow;
   font-weight: 800;
+  cursor: pointer;
 }
 
 option:disabled::after{

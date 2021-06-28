@@ -91,15 +91,17 @@ margin: 0 30px 0 0;
 font-weight: 800;
 background-color: var(--cream);
 text-transform: uppercase;
-
+cursor: pointer;
 
 
 option{
-  font-family: eurostile;
+  font-family: obviously-narrow;
   font-weight: 800;
   margin: 0;
   padding: 0;
   text-transform: uppercase;
+  cursor: pointer;
+
 }
 
 option:disabled::after{
