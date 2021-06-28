@@ -93,6 +93,9 @@ background-color: var(--cream);
 text-transform: uppercase;
 cursor: pointer;
 
+@media(max-width: 500px){
+  width: 100%;
+}
 
 option{
   font-family: obviously-narrow;
@@ -101,7 +104,7 @@ option{
   padding: 0;
   text-transform: uppercase;
   cursor: pointer;
-
+  font-size: 16px;
 }
 
 option:disabled::after{
