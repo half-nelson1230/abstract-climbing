@@ -324,8 +324,8 @@ const ProductForm = ({ product, dato }, props) => {
             <Select
               name={name}
               key={id}
-              onChange={event => handleOptionChange(index, event)}
-              
+              onBlur={event => handleOptionChange(index, event)}
+
             >
               {values.map(value => {
                 const disablee = checkDisabled(name, value);
