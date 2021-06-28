@@ -325,6 +325,7 @@ const ProductForm = ({ product, dato }, props) => {
               name={name}
               key={id}
               onClick={event => handleOptionChange(index, event)}
+              onTouchEnd={event => handleOptionChange(index, event)}
             >
               {values.map(value => {
                 const disablee = checkDisabled(name, value);
