@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 // styles
 const pageStyles = {
@@ -50,5 +50,20 @@ const NotFoundPage = () => {
     </main>
   )
 }
+
+export const query = graphql`
+  {
+    allDatoCmsDisclaimer{
+      edges{
+        node{
+          url
+          title
+        }
+      }
+    }
+
+  }
+
+`
 
 export default NotFoundPage
