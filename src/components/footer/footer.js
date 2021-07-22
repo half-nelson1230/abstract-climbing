@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import styled from 'styled-components'
 import Signup from '~/components/mailchimp/mailchimp'
-import {Link} from 'gatsby'
+import {useStaticQuery, graphql, Link} from 'gatsby'
 
 import fb from '~/images/fb.svg'
 import ig from '~/images/ig.svg'
@@ -107,7 +107,16 @@ strong{
 }
 `
 
-const Footer = () => {
+const Lil = styled.div`
+margin-top: 10px;
+li{
+  font-size: 12px;
+}
+`
+
+const Footer = (props) => {
+
+
   return(
   <Container>
   <Signup
@@ -122,7 +131,9 @@ const Footer = () => {
     <li><strong>Menu</strong></li>
     <Link to="/"><li>Home</li></Link>
     <Link to="/shop"><li>Shop</li></Link>
-
+    <Lil>
+    {props.termies}
+    </Lil>
     </SubMenu>
 
     <SubMenu>
@@ -137,5 +148,7 @@ const Footer = () => {
   </Menu>
   </Container>
 )}
+
+
 
 export default Footer

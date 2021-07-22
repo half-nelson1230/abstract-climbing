@@ -184,6 +184,14 @@ const ShopPage = ({data}) => {
 
 export const query = graphql`
   {
+    allDatoCmsDisclaimer{
+      edges{
+        node{
+          url
+          title
+        }
+      }
+    }
     allShopifyProduct(sort: { fields: [title] }) {
       edges {
         node {

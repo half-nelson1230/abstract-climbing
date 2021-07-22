@@ -127,6 +127,14 @@ export const query = graphql`
 
 
       }
+      allDatoCmsDisclaimer{
+        edges{
+          node{
+            url
+            title
+          }
+        }
+      }
   }
 `
 

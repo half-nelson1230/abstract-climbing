@@ -11,6 +11,13 @@ exports.createPages = ({ graphql, actions }) => {
           }
         }
       }
+      allDatoCmsDisclaimer {
+        edges {
+          node {
+            url
+          }
+        }
+      }
     }
   `).then(result => {
     result.data.allShopifyProduct.edges.forEach(({ node }) => {
@@ -21,6 +28,17 @@ exports.createPages = ({ graphql, actions }) => {
           // Data passed to context is available
           // in page queries as GraphQL variables.
           handle: node.handle,
+        },
+      })
+    })
+    result.data.allDatoCmsDisclaimer.edges.forEach(({ node }) => {
+      createPage({
+        path: `/${node.url}/`,
+        component: path.resolve(`./src/templates/tos.js`),
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          url: node.url,
         },
       })
     })
