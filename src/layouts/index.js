@@ -82,19 +82,6 @@ Layout.propTypes = {
 }
 
 
-export const query = graphql`
-  {
-    allDatoCmsDisclaimer{
-      edges{
-        node{
-          url
-          title
-        }
-      }
-    }
-  }
 
-
-`
 
 export default Layout
